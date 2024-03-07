@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 const db = new PrismaClient();
 
-function getPlants() {
+function getProducts() {
   return [
     {
       id: 'fd105551-0f0d-4a9f-bc41-c559c8a17256',
@@ -32,35 +32,35 @@ function getImages() {
     {
       id: 'fd105551-0f0d-4a9f-bc41-c559c8a17262',
       fileName: 'image.jpg',
-      plantId: 'fd105551-0f0d-4a9f-bc41-c559c8a17256',
+      productId: 'fd105551-0f0d-4a9f-bc41-c559c8a17256',
     },
     {
       id: 'fd105551-0f0d-4a9f-bc41-c559c8a17211',
       fileName: 'image2.jpg',
-      plantId: 'c920c7b9-a67d-4edb-8ce7-e3c9f3889e56',
+      productId: 'c920c7b9-a67d-4edb-8ce7-e3c9f3889e56',
     },
     {
       id: 'fd105551-0f0d-4a9f-bc41-c559c8a17333',
       fileName: 'image3.jpg',
-      plantId: 'fd105551-0f0d-4a9f-bc41-c559c8a17123',
+      productId: 'fd105551-0f0d-4a9f-bc41-c559c8a17123',
     },
   ];
 }
 
 async function seed() {
   await Promise.all(
-    getPlants().map((plant) => {
-      return db.plant.create({ data: plant });
+    getProducts().map((product) => {
+      return db.product.create({ data: product });
     }),
   );
 
   await Promise.all(
-    getImages().map(({ plantId, ...imageData }) => {
+    getImages().map(({ productId, ...imageData }) => {
       return db.image.create({
         data: {
           ...imageData,
-          plant: {
-            connect: { id: plantId },
+          product: {
+            connect: { id: productId },
           },
         },
       });
