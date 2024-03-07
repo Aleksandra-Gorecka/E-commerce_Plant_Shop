@@ -10,51 +10,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  CLIENT
-  ADMIN
-}
-
-model User {
-  id       String    @id @default(uuid())
-  login    String    @unique
-  role     Role      @default(CLIENT)
-  password Password?
-  Order    Order[]
-}
-
-model Password {
-  id             String @id @default(uuid())
-  hashedPassword String
-  user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String @unique
-}
-
 model Product {
   id          String @id @default(uuid())
   name        String @unique
   price       Int
   description String
-  image       Image[]
+  image       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   orders      ProductToOrder[]
 }
 
-model Image {
-  id          String  @id @default(uuid())
-  fileName    String @unique
-  
-  product       Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId     String
-}
-
 model Order {
-  id        String   @id @default(uuid())
-  products  ProductToOrder[]
-  user      User @relation(fields: [userId], references: [id])
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @default(uuid())
+  name           String
+  email          String
+  phone          Int
+  shippingStreet String
+  shippingZip    String
+  shippingCity   String
+  orderTotal     Int
+  products       ProductToOrder[]
+  createdAt      DateTime @default(now())
 }
 
 model ProductToOrder {

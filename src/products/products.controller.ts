@@ -18,8 +18,8 @@ export class ProductsController {
 
   @Get('/:id')
   async getById(@Param('id', new ParseUUIDPipe()) id: string) {
-    const book = await this.productsService.getById(id);
-    if (!book) throw new NotFoundException('Product not found');
-    return book;
+    const product = await this.productsService.getById(id);
+    if (!product) throw new NotFoundException('Product not found');
+    return product;
   }
 }
