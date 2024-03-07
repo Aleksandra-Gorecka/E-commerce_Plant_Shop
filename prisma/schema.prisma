@@ -9,3 +9,22 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Plant {
+  id          String @id @default(uuid())
+  name        String @unique
+  price       Int
+  description String
+  image       Image[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Image {
+  id          String  @id @default(uuid())
+  fileName    String @unique
+  
+  plant       Plant @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  plantId     String   
+}
