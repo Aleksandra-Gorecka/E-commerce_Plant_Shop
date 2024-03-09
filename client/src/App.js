@@ -7,7 +7,7 @@ import Footer from './components/views/Footer/Footer'
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/pages/Home/Home';
 import Product from './components/pages/Product/Product';
-import Basket from './components/pages/Basket/Basket';
+import Cart from './components/pages/Cart/Cart';
 import OrderSummary from './components/pages/OrderSummary/OrderSummary';
 import NotFound from './components/pages/NotFound/NotFound';
 
@@ -22,7 +22,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/product/:id" element={<Product />} />
-          <Route path="/basket" element={<Basket />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/ordersummary" element={<OrderSummary />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
