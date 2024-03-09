@@ -1,4 +1,4 @@
-const ProductCart = () =>{
+const Product = () =>{
     return (
         <section>
             ProductCart
@@ -6,4 +6,4 @@ const ProductCart = () =>{
     )
 }
 
-export default ProductCart;
+export default Product;

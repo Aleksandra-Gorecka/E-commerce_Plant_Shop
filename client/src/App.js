@@ -6,7 +6,7 @@ import Header from './components/views/Header/Header'
 import Footer from './components/views/Footer/Footer'
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/pages/Home/Home';
-import ProductCart from './components/pages/ProductCart/ProductCart';
+import Product from './components/pages/Product/Product';
 import Basket from './components/pages/Basket/Basket';
 import OrderSummary from './components/pages/OrderSummary/OrderSummary';
 import NotFound from './components/pages/NotFound/NotFound';
@@ -21,7 +21,7 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/product/:id" element={<ProductCart />} />
+          <Route path="/product/:id" element={<Product />} />
           <Route path="/basket" element={<Basket />} />
           <Route path="/ordersummary" element={<OrderSummary />} />
           <Route path="*" element={<NotFound />} />

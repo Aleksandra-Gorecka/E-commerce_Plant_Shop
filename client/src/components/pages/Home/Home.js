@@ -1,7 +1,9 @@
+import ProductsList from "../../features/ProductsList/ProductsList";
+
 const Home = () =>{
     return (
         <section>
-            Home
+            <ProductsList />
         </section>
     )
 }
