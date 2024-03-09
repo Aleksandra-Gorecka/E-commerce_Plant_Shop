@@ -1,7 +1,9 @@
+import ProductSingle from "../../features/ProductSingle/ProductSingle";
+
 const Product = () =>{
     return (
         <section>
-            ProductCart
+            <ProductSingle />
         </section>
     )
 }
