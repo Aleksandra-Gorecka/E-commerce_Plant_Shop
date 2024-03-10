@@ -5,6 +5,7 @@ import { Navigate } from "react-router-dom";
 import { Card, Col, Button } from 'react-bootstrap';
 import styles from './ProductSingle.module.scss';
 import { IMGS_URL } from "../../../config";
+import QuantityWidget from "../../common/QuantityWidget/QuanityWidget";
 
 const ProductSingle = () =>{
 
@@ -37,9 +38,12 @@ const ProductSingle = () =>{
 								    <b>Price: </b>
 								    {productData.price}$
 							    </p>
-                                <Button variant="outline-success m-1">
-								    Add to Cart
-							    </Button>
+                                <div className="d-flex">
+                                    <QuantityWidget />
+                                    <Button variant="outline-success m-1">
+								        Add to Cart
+							        </Button>
+                                </div>
                             </div>
 						</Card.Body>
                     </Card>
