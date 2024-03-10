@@ -1,8 +1,8 @@
+import CartForm from "../../features/CartForm/CartForm"
+
 const Cart = () =>{
     return (
-        <section>
-            Cart
-        </section>
+        <CartForm />
     )
 }
 

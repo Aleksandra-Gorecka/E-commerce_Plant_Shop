@@ -1,17 +1,30 @@
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getProductById } from '../../../redux/productsRedux';
 import { Navigate } from "react-router-dom";
 import { Card, Col, Button } from 'react-bootstrap';
 import styles from './ProductSingle.module.scss';
 import { IMGS_URL } from "../../../config";
 import QuantityWidget from "../../common/QuantityWidget/QuanityWidget";
+import { addToCart } from "../../../redux/cartRedux";
+import { useState } from "react";
 
 const ProductSingle = () =>{
 
     const { id } = useParams();
     const productData = useSelector(state => getProductById(state, id));
-    console.log(productData)
+    const dispatch = useDispatch();
+
+    const [quantity, setQuantity] = useState(1);
+
+    const handleCountChange = (count) => {
+        setQuantity(count);
+    };
+
+    const handleAddToCart = (productData) => {
+        productData.quantity = quantity;
+        dispatch(addToCart(productData));
+    };
 
     if (!productData) return <Navigate to={'/'} />;
     return (
@@ -39,8 +52,8 @@ const ProductSingle = () =>{
 								    {productData.price}$
 							    </p>
                                 <div className="d-flex">
-                                    <QuantityWidget />
-                                    <Button variant="outline-success m-1">
+                                    <QuantityWidget onCountChange={handleCountChange}/>
+                                    <Button variant="outline-success m-1" onClick={() => handleAddToCart(productData)}>
 								        Add to Cart
 							        </Button>
                                 </div>

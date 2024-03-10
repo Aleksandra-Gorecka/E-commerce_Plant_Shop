@@ -1,6 +1,7 @@
 const initialState = {
     products: [],
     orders: [],
+    cart: [],
 };
 
 

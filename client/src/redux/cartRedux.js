@@ -12,7 +12,7 @@ export const addToCart = payload => ({ type: ADD_TO_CART, payload });
 const cartReducer = (statePart = [], action) => {
     switch (action.type) {
       case ADD_TO_CART:
-        return [...action.payload];
+        return [...statePart, {...action.payload}]
       default:
         return statePart;
     };
