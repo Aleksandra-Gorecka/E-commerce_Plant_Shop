@@ -2,11 +2,15 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import styles from './QuantityWidget.module.scss';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const QuantityWidget = ({ onCountChange }) =>{
+const QuantityWidget = ({ onCountChange, initialValue }) =>{
 
-    const [productCount, setProductCount] = useState(1);
+    const [productCount, setProductCount] = useState(initialValue || 1);
+
+    useEffect(() => {
+      setProductCount(initialValue || 1);
+  }, [initialValue]);
 
     const handleProductCount = () => {
       onCountChange(productCount);

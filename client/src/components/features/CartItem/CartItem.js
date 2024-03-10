@@ -8,10 +8,16 @@ import styles from './CartItem.module.scss';
 
 const CartItem = ({name, image, price, quantity }) =>{
 
-    console.log(typeof(price));
-    console.log(typeof(quantity));
-
+    const [quantityUpdate, setQuantityUpdate] = useState(quantity);
     const [comment, setComment] = useState({});
+
+    const handleQuantityChange = newQuantity => {
+        setQuantityUpdate(newQuantity);
+    };
+
+    const handleCommentChange = e => {
+        setComment(e.target.value);
+    };
 
     return (
         <Card className="mx-3 py-2 my-2" style={{ maxWidth: '60rem' }}>
@@ -27,20 +33,20 @@ const CartItem = ({name, image, price, quantity }) =>{
                     </Card.Subtitle>
                 </Col>
                 <Col xs={6} md={3} className="d-flex justify-content-end">
-                    <QuantityWidget />
+                    <QuantityWidget onCountChange={handleQuantityChange} initialValue={quantity} />
                 </Col>
                 <Col xs={6} md={3} className="d-flex justify-content-space-between" >
                     <div>Total Price: </div>
-                    <div>${(price * quantity).toFixed(2)}</div>
+                    <div>${(price * quantityUpdate).toFixed(2)}</div>
                 </Col>
             </Row>
             <Row className="m-2">
                 <Col xs={12} md={4} className="mb-2">
                     <Form.Control
-                    variant="success"
-                      type="text"
-                      placeholder="Add comment"
-                      onChange={e => setComment(e.target.value )}
+                        variant="success"
+                        type="text"
+                        placeholder="Add comment"
+                        onChange={handleCommentChange}
                     />
                 </Col>
                 <Col xs={12} md={4}>
