@@ -8,14 +8,14 @@ export class OrdersService {
 
   public getAll(): Promise<Order[]> {
     return this.prismaService.order.findMany({
-      include: { products: true },
+      include: { cartProducts: true },
     });
   }
 
   public getById(id: Order['id']): Promise<Order | null> {
     return this.prismaService.order.findUnique({
       where: { id },
-      include: { products: true },
+      include: { cartProducts: true },
     });
   }
 }
