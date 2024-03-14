@@ -11,7 +11,8 @@ import { updateCart } from "../../../redux/cartRedux";
 const CartItem = ({name, image, price, quantity, id }) =>{
 
     const [quantityUpdate, setQuantityUpdate] = useState(quantity);
-    const [comment, setComment] = useState({});
+    const [comment, setComment] = useState('');
+    const [commentForm, setCommentForm] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -26,6 +27,11 @@ const CartItem = ({name, image, price, quantity, id }) =>{
 
     const handleCartUpdate = () => {
         dispatch(updateCart({id, comment}));
+        setCommentForm(false);
+    }
+
+    const handleCommentForm = () => {
+        setCommentForm(true);
     }
 
 
@@ -51,18 +57,32 @@ const CartItem = ({name, image, price, quantity, id }) =>{
                 </Col>
             </Row>
             <Row className="mt-2">
-                <Col xs={12} md={4}>
-                    <Form.Control
-                        variant="success"
-                        type="text"
-                        placeholder="Add comment"
-                        onChange={handleCommentChange}
-                    />
-                </Col>
-                <Col>
-                    <Button variant="success" onClick={handleCartUpdate} >Add comment</Button>
-                </Col>
-                <Col className="d-flex justify-content-end m-auto">
+                {commentForm ? (
+                    <>
+                        <Col xs={12} md={4}>
+                            <Form.Control
+                                variant="success"
+                                type="text"
+                                placeholder={comment ? '' : 'Add comment'}
+                                value={comment}
+                                onChange={handleCommentChange}
+                            />
+                        </Col>
+                        <Col>
+                            <Button variant="outline-success" onClick={handleCartUpdate} >Add comment</Button>
+                        </Col>
+                    </>
+                ) : ( 
+                    <>
+                        <Col xs={12} md={4} className="d-flex align-items-center">
+                            <div>{comment}</div>
+                        </Col>
+                        <Col>
+                            <Button variant="success" onClick={handleCommentForm} >Edit comment</Button>
+                        </Col>
+                    </>
+                )} 
+                <Col className="d-flex justify-content-end align-items-end">
                     <FontAwesomeIcon icon={faTrashCan} className={styles.trashIcon} />
                 </Col>
             </Row>
