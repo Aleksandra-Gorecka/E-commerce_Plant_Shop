@@ -22,8 +22,12 @@ const ProductSingle = () =>{
     };
 
     const handleAddToCart = (productData) => {
-        productData.quantity = quantity;
-        dispatch(addToCart(productData));
+        const cartProductData = {};
+        cartProductData.id = productData.id;
+        cartProductData.name = productData.name;
+        cartProductData.price = productData.price;
+        cartProductData.quantity = quantity;
+        dispatch(addToCart(cartProductData));
     };
 
     if (!productData) return <Navigate to={'/'} />;

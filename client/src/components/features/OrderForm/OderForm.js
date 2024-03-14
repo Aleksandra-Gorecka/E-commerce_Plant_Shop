@@ -3,6 +3,7 @@ import { getCart } from "../../../redux/cartRedux";
 import { Row, Col, ListGroup, Button, Form } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import styles from './OrderForm.module.scss';
+import { API_URL } from "../../../config";
 
 const OrderForm = () =>{
 
@@ -15,6 +16,7 @@ const OrderForm = () =>{
     const [zip, setZip] = useState('');
     const [city, setCity] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('');
+    //const [status, setStatus] = useState(null);
 
 
     useEffect(() => {
@@ -22,10 +24,10 @@ const OrderForm = () =>{
         setOrderTotal(totalAmount);
     }, [cart]);
 
-    console.log(cart);
+    const handleOrderSubmit = async (e) => {
+      e.preventDefault();
 
-    /* const createOrderData = () => {
-      return {
+      const orderData = {
         name: name,
         email: email,
         phone: phone,
@@ -33,15 +35,25 @@ const OrderForm = () =>{
         shippingZip: zip,
         shippingCity: city,
         paymentMethod: paymentMethod,
-        totalPrice: orderTotal,
-        cartProducts: cart.products,
+        orderTotal: orderTotal,
+        products: cart.map((cartItem) => ({
+          productId: cartItem.id,
+          quantity: cartItem.quantity,
+          comment: cartItem.comment || '',
+        })),
       };
+
+      console.log('Order Data:', orderData);
+        console.log('products: ', orderData.products);
+
+      try {
+        console.log('Order Data:', orderData);
+        console.log('products: ', orderData.products);
+      } catch (error) {
+        console.error('Error submitting order:', error);
+      }
+
     };
-
-    handleOrderSubmit = () => {
-
-    } */
-    
 
     return (
         <section style={{ width: '80%' }} className="m-auto">
@@ -94,29 +106,29 @@ const OrderForm = () =>{
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Email:</Form.Label>
-                    <Form.Control type="email" value={email} placeholder="Enter your email" onChange={e => setEmail(e.target.email)}/>
+                    <Form.Control type="email" value={email} placeholder="Enter your email" onChange={e => setEmail(e.target.value)}/>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Phone Number:</Form.Label>
-                    <Form.Control type="text" value={phone} placeholder="Enter your phone number" onChange={e => setPhone(e.target.phone)}/>
+                    <Form.Control type="text" value={phone} placeholder="Enter your phone number" onChange={e => setPhone(e.target.value)}/>
                 </Form.Group>
                 <h4 className="mt-5 text-center">Address:</h4>
                 <Form.Group className="mb-3">
                     <Form.Label>Street: </Form.Label>
-                    <Form.Control type="text" value={street} placeholder="Enter your street" onChange={e => setStreet(e.target.street)}/>
+                    <Form.Control type="text" value={street} placeholder="Enter your street" onChange={e => setStreet(e.target.value)}/>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>ZIP code: </Form.Label>
-                    <Form.Control type="text" value={zip} placeholder="Enter your ZIP code" onChange={e => setZip(e.target.zip)}/>
+                    <Form.Control type="text" value={zip} placeholder="Enter your ZIP code" onChange={e => setZip(e.target.value)}/>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>City: </Form.Label>
-                    <Form.Control type="text" value={city} placeholder="Enter your City" onChange={e => setCity(e.target.city)}/>
+                    <Form.Control type="text" value={city} placeholder="Enter your City" onChange={e => setCity(e.target.value)}/>
                 </Form.Group>
                 <h4 className="mt-5 text-center">Payment:</h4>
                 <Form.Group className="mb-3">
                     <Form.Label>Payment Method: </Form.Label>
-                    <Form.Control as="select" value={paymentMethod} onChange={e => setPaymentMethod(e.target.paymentMethod)}>
+                    <Form.Control as="select" value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
                         <option value="" disabled>Select payment method</option>
                         <option>Credit Card</option>
                         <option>PayPal</option>
@@ -127,7 +139,7 @@ const OrderForm = () =>{
           </div>
 
           <div className="mt-5 text-end">
-            <Button variant="success">
+            <Button variant="success" onClick={handleOrderSubmit}>
               Send Order
             </Button>
           </div>

@@ -8,6 +8,8 @@ const CartForm = () =>{
 
     const cart = useSelector(getCart);
 
+    console.log(cart);
+
     const totalAmount = cart.reduce((total, cartItem) => {
         return total + cartItem.price * cartItem.quantity;
       }, 0).toFixed(2);
@@ -24,7 +26,6 @@ const CartForm = () =>{
                         <CartItem 
                             key={ cartItem.id } 
                             name={cartItem.name} 
-                            image={cartItem.image} 
                             price ={cartItem.price} 
                             quantity={cartItem.quantity}
                             comment={cartItem.comment}

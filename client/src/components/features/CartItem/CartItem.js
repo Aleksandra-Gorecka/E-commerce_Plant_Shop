@@ -4,12 +4,16 @@ import QuantityWidget from "../../common/QuantityWidget/QuanityWidget";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import styles from './CartItem.module.scss';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { updateCart } from "../../../redux/cartRedux";
 import { deleteCartItem } from "../../../redux/cartRedux";
 import { useEffect, useState } from 'react';
+import { getProductById } from '../../../redux/productsRedux';
 
-const CartItem = ({name, image, price, quantity, id, comment }) =>{
+const CartItem = ({name, price, quantity, id, comment }) =>{
+
+    const productData = useSelector(state => getProductById(state, id));
+    const image = productData.image;
 
     const [quantityUpdate, setQuantityUpdate] = useState(quantity);
     const [commentUpdate, setCommentUpdate] = useState(comment || '');
