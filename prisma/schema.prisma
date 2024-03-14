@@ -31,6 +31,7 @@ model Order {
   shippingStreet String
   shippingZip    String
   shippingCity   String
+  paymentMethod  String
   orderTotal     Int
   products       ProductToOrder[]
   createdAt      DateTime @default(now())
