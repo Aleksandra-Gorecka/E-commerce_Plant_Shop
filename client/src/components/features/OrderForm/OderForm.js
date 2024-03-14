@@ -16,7 +16,7 @@ const OrderForm = () =>{
     const [zip, setZip] = useState('');
     const [city, setCity] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('');
-    //const [status, setStatus] = useState(null);
+    const [status, setStatus] = useState(null);
 
 
     useEffect(() => {
@@ -27,6 +27,21 @@ const OrderForm = () =>{
     const handleOrderSubmit = async (e) => {
       e.preventDefault();
 
+      if (
+        !name ||
+        !email ||
+        !phone ||
+        !street ||
+        !zip ||
+        !city ||
+        !paymentMethod ||
+        cart.length === 0
+      ) {
+        setStatus('clientError');
+        console.log(status);
+        return;
+      }
+
       const orderData = {
         name: name,
         email: email,
@@ -36,22 +51,29 @@ const OrderForm = () =>{
         shippingCity: city,
         paymentMethod: paymentMethod,
         orderTotal: orderTotal,
-        products: cart.map((cartItem) => ({
-          productId: cartItem.id,
-          quantity: cartItem.quantity,
-          comment: cartItem.comment || '',
-        })),
+        cartProducts: cart,
       };
 
-      console.log('Order Data:', orderData);
-        console.log('products: ', orderData.products);
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      };
+      setStatus('loading');
+      console.log(status);
 
-      try {
-        console.log('Order Data:', orderData);
-        console.log('products: ', orderData.products);
-      } catch (error) {
-        console.error('Error submitting order:', error);
-      }
+      fetch(`${API_URL}/api/orders`, options)
+      .then((res) => {
+        console.log(res);
+        console.log(status);
+      })
+      .catch((err) => {
+        console.log(err);
+        setStatus('serverError');
+        console.log(status);
+      });
 
     };
 

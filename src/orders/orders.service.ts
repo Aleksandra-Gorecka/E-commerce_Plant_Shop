@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Order } from '@prisma/client';
+import { CartProduct } from '@prisma/client';
 
 @Injectable()
 export class OrdersService {
@@ -17,5 +18,29 @@ export class OrdersService {
       where: { id },
       include: { cartProducts: true },
     });
+  }
+
+  public async createOrder(
+    orderData: Omit<Order, 'id' | 'createdAt'>,
+    cartProducts: Omit<CartProduct, 'id'>[],
+  ): Promise<Order> {
+    try {
+      return await this.prismaService.order.create({
+        data: {
+          ...orderData,
+          cartProducts: {
+            create: cartProducts.map((cartProduct) => ({
+              ...cartProduct,
+              productId: cartProduct.productId,
+            })),
+          },
+        },
+      });
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new ConflictException('Order with the same ID already exists');
+      }
+      throw error;
+    }
   }
 }
