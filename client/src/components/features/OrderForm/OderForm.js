@@ -21,13 +21,33 @@ const OrderForm = () =>{
         const totalAmount = cart.reduce((total, cartItem) => total + cartItem.price * cartItem.quantity, 0).toFixed(2);
         setOrderTotal(totalAmount);
     }, [cart]);
+
+    console.log(cart);
+
+    /* const createOrderData = () => {
+      return {
+        name: name,
+        email: email,
+        phone: phone,
+        shippingStreet: street,
+        shippingZip: zip,
+        shippingCity: city,
+        paymentMethod: paymentMethod,
+        totalPrice: orderTotal,
+        cartProducts: cart.products,
+      };
+    };
+
+    handleOrderSubmit = () => {
+
+    } */
     
 
     return (
         <section style={{ width: '80%' }} className="m-auto">
             <h2>Order Summary</h2>
             <ListGroup>
-                <ListGroup.Item action variant="dark">
+                <ListGroup.Item variant="success">
                 <Row>
                   <Col xs={12} sm={8} className={styles.bold_text}>
                     Name
@@ -40,7 +60,7 @@ const OrderForm = () =>{
                 </Row>
               </ListGroup.Item>
             {cart.map((cartItem) => (
-              <ListGroup.Item key={cartItem.id} action variant="success">
+              <ListGroup.Item key={cartItem.id}>
                 <Row>
                   <Col xs={12} sm={8} className={styles.bold_text}>
                     {cartItem.name}

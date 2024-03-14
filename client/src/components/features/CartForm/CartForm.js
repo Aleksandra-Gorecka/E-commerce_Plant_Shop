@@ -7,7 +7,6 @@ import { NavLink } from "react-router-dom";
 const CartForm = () =>{
 
     const cart = useSelector(getCart);
-    console.log(cart);
 
     const totalAmount = cart.reduce((total, cartItem) => {
         return total + cartItem.price * cartItem.quantity;
