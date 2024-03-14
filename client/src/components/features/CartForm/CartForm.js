@@ -8,6 +8,10 @@ const CartForm = () =>{
     const cart = useSelector(getCart);
     console.log(cart);
 
+    const totalAmount = cart.reduce((total, cartItem) => {
+        return total + cartItem.price * cartItem.quantity;
+      }, 0).toFixed(2);
+
     return (
         <section>
             <Row className='mx-1 text-center'><h2>Your Cart</h2></Row>
@@ -23,12 +27,13 @@ const CartForm = () =>{
                             image={cartItem.image} 
                             price ={cartItem.price} 
                             quantity={cartItem.quantity}
+                            id={cartItem.id}
                         />
                     ))}
                 </Row>
                 <Row className='mx-1 mt-4'>
                     <Col>
-                        <h2>Total: $</h2>
+                        <h2>Total: ${totalAmount}</h2>
                     </Col>
                     <Col className="d-flex justify-content-end">
                         <Button variant="success">Order Summary</Button>

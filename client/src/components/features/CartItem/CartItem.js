@@ -5,19 +5,29 @@ import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import styles from './CartItem.module.scss';
+import { useDispatch } from 'react-redux';
+import { updateCart } from "../../../redux/cartRedux";
 
-const CartItem = ({name, image, price, quantity }) =>{
+const CartItem = ({name, image, price, quantity, id }) =>{
 
     const [quantityUpdate, setQuantityUpdate] = useState(quantity);
     const [comment, setComment] = useState({});
 
+    const dispatch = useDispatch();
+
     const handleQuantityChange = newQuantity => {
         setQuantityUpdate(newQuantity);
+        dispatch(updateCart({id, quantity: newQuantity}));
     };
 
     const handleCommentChange = e => {
         setComment(e.target.value);
     };
+
+    const handleCartUpdate = () => {
+        dispatch(updateCart({id, comment}));
+    }
+
 
     return (
         <Card className="mx-3 py-2 my-2" style={{ maxWidth: '60rem' }}>
@@ -40,8 +50,8 @@ const CartItem = ({name, image, price, quantity }) =>{
                     <div>${(price * quantityUpdate).toFixed(2)}</div>
                 </Col>
             </Row>
-            <Row className="m-2">
-                <Col xs={12} md={4} className="mb-2">
+            <Row className="mt-2">
+                <Col xs={12} md={4}>
                     <Form.Control
                         variant="success"
                         type="text"
@@ -49,11 +59,11 @@ const CartItem = ({name, image, price, quantity }) =>{
                         onChange={handleCommentChange}
                     />
                 </Col>
-                <Col xs={12} md={4}>
-                    <Button variant="success">Add comment</Button>
+                <Col>
+                    <Button variant="success" onClick={handleCartUpdate} >Add comment</Button>
                 </Col>
                 <Col className="d-flex justify-content-end m-auto">
-                    <FontAwesomeIcon icon={faTrashCan} />
+                    <FontAwesomeIcon icon={faTrashCan} className={styles.trashIcon} />
                 </Col>
             </Row>
         </Card>

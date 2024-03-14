@@ -11,7 +11,7 @@ const ProductCart = ({ name, price, description, image, id }) => {
             <Card.Body>
                 <div className="d-flex">
                     <Card.Title>{ name }</Card.Title>
-                    <Card.Subtitle className="mt-auto mb-auto text-muted ms-auto">{ price }$</Card.Subtitle>
+                    <Card.Subtitle className="mt-auto mb-auto text-muted ms-auto">${ price }</Card.Subtitle>
                 </div>
                 <NavLink to={`/product/${id}`} >
                     <Button variant="secondary" >Read more...</Button>
