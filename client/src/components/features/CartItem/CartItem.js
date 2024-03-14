@@ -7,6 +7,7 @@ import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import styles from './CartItem.module.scss';
 import { useDispatch } from 'react-redux';
 import { updateCart } from "../../../redux/cartRedux";
+import { deleteCartItem } from "../../../redux/cartRedux";
 
 const CartItem = ({name, image, price, quantity, id }) =>{
 
@@ -32,6 +33,10 @@ const CartItem = ({name, image, price, quantity, id }) =>{
 
     const handleCommentForm = () => {
         setCommentForm(true);
+    }
+
+    const handleDeleteFromCart = () => {
+        dispatch(deleteCartItem(id));
     }
 
 
@@ -83,7 +88,7 @@ const CartItem = ({name, image, price, quantity, id }) =>{
                     </>
                 )} 
                 <Col className="d-flex justify-content-end align-items-end">
-                    <FontAwesomeIcon icon={faTrashCan} className={styles.trashIcon} />
+                    <FontAwesomeIcon icon={faTrashCan} className={styles.trashIcon} onClick={handleDeleteFromCart}/>
                 </Col>
             </Row>
         </Card>

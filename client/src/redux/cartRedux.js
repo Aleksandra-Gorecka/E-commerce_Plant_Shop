@@ -4,11 +4,13 @@ export const getCart = ({ cart }) => cart;
 //actions
 const createActionName = actionName => `app/cart/${actionName}`;
 const ADD_TO_CART = createActionName('ADD_TO_CART');
-const UPDATE_CART = createActionName('UPDATE_CART_ITEM');
+const UPDATE_CART = createActionName('UPDATE_CART');
+const DELETE_CART_ITEM = createActionName('DELETE_CART_ITEM');
 
 // action creators
 export const addToCart = payload => ({ type: ADD_TO_CART, payload });
-export const updateCart = (payload) => ({ payload, type: UPDATE_CART });
+export const updateCart = payload => ({ payload, type: UPDATE_CART });
+export const deleteCartItem = payload => ({ payload, type: DELETE_CART_ITEM });
 
 //reducer
 const cartReducer = (statePart = [], action) => {
@@ -33,6 +35,9 @@ const cartReducer = (statePart = [], action) => {
           : product
         );
       };
+
+      case DELETE_CART_ITEM: 
+        return statePart.filter((product) => product.id !== action.payload);
 
       default:
         return statePart;

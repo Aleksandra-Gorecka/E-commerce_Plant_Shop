@@ -8,6 +8,11 @@
 
 .trashIcon {
 	font-size: 20px;
+
+	&:hover {
+		color: #006600;
+		cursor: pointer;
+	  }
 }
 
 .comment {
