@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
 import { getCart } from "../../../redux/cartRedux";
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Button, Nav } from "react-bootstrap";
 import CartItem from "../CartItem/CartItem";
+import { NavLink } from "react-router-dom";
 
 const CartForm = () =>{
 
@@ -27,6 +28,7 @@ const CartForm = () =>{
                             image={cartItem.image} 
                             price ={cartItem.price} 
                             quantity={cartItem.quantity}
+                            comment={cartItem.comment}
                             id={cartItem.id}
                         />
                     ))}
@@ -36,7 +38,9 @@ const CartForm = () =>{
                         <h2>Total: ${totalAmount}</h2>
                     </Col>
                     <Col className="d-flex justify-content-end">
-                        <Button variant="success">Order Summary</Button>
+                        <Nav.Link to="/ordersummary" as={NavLink}>
+                            <Button variant="success">Order Summary</Button>
+                        </Nav.Link>
                     </Col>
                 </Row>
             </>

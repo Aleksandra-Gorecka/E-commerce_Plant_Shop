@@ -1,8 +1,8 @@
+import OrderForm from "../../features/OrderForm/OderForm"
+
 const OrderSummary = () =>{
     return (
-        <section>
-            OrderSummary
-        </section>
+        <OrderForm />
     )
 }
 

@@ -1,21 +1,27 @@
 import { Card, Row, Col, Form, Button } from "react-bootstrap"
 import { IMGS_URL } from "../../../config";
 import QuantityWidget from "../../common/QuantityWidget/QuanityWidget";
-import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import styles from './CartItem.module.scss';
 import { useDispatch } from 'react-redux';
 import { updateCart } from "../../../redux/cartRedux";
 import { deleteCartItem } from "../../../redux/cartRedux";
+import { useEffect, useState } from 'react';
 
-const CartItem = ({name, image, price, quantity, id }) =>{
+const CartItem = ({name, image, price, quantity, id, comment }) =>{
 
     const [quantityUpdate, setQuantityUpdate] = useState(quantity);
-    const [comment, setComment] = useState('');
+    const [commentUpdate, setCommentUpdate] = useState(comment || '');
     const [commentForm, setCommentForm] = useState(true);
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(commentUpdate !== '') {
+            setCommentForm(false);
+        }
+    }, []);
 
     const handleQuantityChange = newQuantity => {
         setQuantityUpdate(newQuantity);
@@ -23,11 +29,11 @@ const CartItem = ({name, image, price, quantity, id }) =>{
     };
 
     const handleCommentChange = e => {
-        setComment(e.target.value);
+        setCommentUpdate(e.target.value);
     };
 
     const handleCartUpdate = () => {
-        dispatch(updateCart({id, comment}));
+        dispatch(updateCart({id, comment: commentUpdate}));
         setCommentForm(false);
     }
 
@@ -68,8 +74,8 @@ const CartItem = ({name, image, price, quantity, id }) =>{
                             <Form.Control
                                 variant="success"
                                 type="text"
-                                placeholder={comment ? '' : 'Add comment'}
-                                value={comment}
+                                placeholder={commentUpdate ? '' : 'Add comment'}
+                                value={commentUpdate}
                                 onChange={handleCommentChange}
                             />
                         </Col>
@@ -80,7 +86,7 @@ const CartItem = ({name, image, price, quantity, id }) =>{
                 ) : ( 
                     <>
                         <Col xs={12} md={4} className="d-flex align-items-center">
-                            <div>{comment}</div>
+                            <div>Comment: {commentUpdate}</div>
                         </Col>
                         <Col>
                             <Button variant="success" onClick={handleCommentForm} >Edit comment</Button>
