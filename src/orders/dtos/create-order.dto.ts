@@ -39,7 +39,7 @@ class OrderDTO {
   email: string;
 
   @IsNotEmpty()
-  @IsEmail()
+  @IsNumber()
   phone: number;
 
   @IsNotEmpty()
