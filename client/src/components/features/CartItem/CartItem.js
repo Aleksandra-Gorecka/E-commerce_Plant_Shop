@@ -10,10 +10,11 @@ import { deleteCartItem } from "../../../redux/cartRedux";
 import { useEffect, useState } from 'react';
 import { getProductById } from '../../../redux/productsRedux';
 
-const CartItem = ({name, price, quantity, id, comment }) =>{
+const CartItem = ({price, quantity, productId, comment }) =>{
 
-    const productData = useSelector(state => getProductById(state, id));
+    const productData = useSelector(state => getProductById(state, productId));
     const image = productData.image;
+    const name = productData.name;
 
     const [quantityUpdate, setQuantityUpdate] = useState(quantity);
     const [commentUpdate, setCommentUpdate] = useState(comment || '');
@@ -29,7 +30,7 @@ const CartItem = ({name, price, quantity, id, comment }) =>{
 
     const handleQuantityChange = newQuantity => {
         setQuantityUpdate(newQuantity);
-        dispatch(updateCart({id, quantity: newQuantity}));
+        dispatch(updateCart({productId, quantity: newQuantity}));
     };
 
     const handleCommentChange = e => {
@@ -37,7 +38,7 @@ const CartItem = ({name, price, quantity, id, comment }) =>{
     };
 
     const handleCartUpdate = () => {
-        dispatch(updateCart({id, comment: commentUpdate}));
+        dispatch(updateCart({productId, comment: commentUpdate}));
         setCommentForm(false);
     }
 
@@ -46,7 +47,7 @@ const CartItem = ({name, price, quantity, id, comment }) =>{
     }
 
     const handleDeleteFromCart = () => {
-        dispatch(deleteCartItem(id));
+        dispatch(deleteCartItem(productId));
     }
 
 

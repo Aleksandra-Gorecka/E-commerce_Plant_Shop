@@ -8,7 +8,7 @@ import orderReducer from './orderRedux';
 const subreducers = {
     products: productsReducer,
     cart: cartReducer,
-    order: orderReducer,
+    orders: orderReducer,
 }
 
 const reducer = combineReducers(subreducers);

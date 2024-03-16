@@ -16,13 +16,13 @@ export const deleteCartItem = payload => ({ payload, type: DELETE_CART_ITEM });
 const cartReducer = (statePart = [], action) => {
     switch (action.type) {
       case ADD_TO_CART: {
-        const { id, quantity } = action.payload;
-        const existingProduct = statePart.find(product => product.id === id);
+        const { productId, quantity } = action.payload;
+        const existingProduct = statePart.find(cartItem => cartItem.productId === productId);
         return existingProduct
-          ? statePart.map(product =>
-              product.id === id
-                ? { ...product, quantity: product.quantity + quantity }
-                : product
+          ? statePart.map(cartItem =>
+              cartItem.productId === productId
+                ? { ...cartItem, quantity: cartItem.quantity + quantity }
+                : cartItem
             )
           : [...statePart, { ...action.payload }];
       };

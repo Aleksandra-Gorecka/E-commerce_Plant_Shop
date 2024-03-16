@@ -23,8 +23,7 @@ const ProductSingle = () =>{
 
     const handleAddToCart = (productData) => {
         const cartProductData = {};
-        cartProductData.id = productData.id;
-        cartProductData.name = productData.name;
+        cartProductData.productId = productData.id;
         cartProductData.price = productData.price;
         cartProductData.quantity = quantity;
         dispatch(addToCart(cartProductData));

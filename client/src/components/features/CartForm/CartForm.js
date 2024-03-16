@@ -24,12 +24,11 @@ const CartForm = () =>{
                 <Row className="d-flex flex-wrap justify-content-center p-0 my-4 ms-auto">
                     {cart.map(cartItem => (
                         <CartItem 
-                            key={ cartItem.id } 
-                            name={cartItem.name} 
+                            key={ cartItem.productId }
                             price ={cartItem.price} 
                             quantity={cartItem.quantity}
                             comment={cartItem.comment}
-                            id={cartItem.id}
+                            productId={cartItem.productId}
                         />
                     ))}
                 </Row>

@@ -1,13 +1,16 @@
 import { useSelector } from "react-redux";
 import { getCart } from "../../../redux/cartRedux";
-import { Row, Col, ListGroup, Button, Form } from 'react-bootstrap';
+import { Row, Col, ListGroup, Button, Form, Alert } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import styles from './OrderForm.module.scss';
 import { API_URL } from "../../../config";
+import { Link } from 'react-router-dom';
+import { getAllProducts } from '../../../redux/productsRedux';
 
 const OrderForm = () =>{
 
     const cart = useSelector(getCart);
+    const products = useSelector(getAllProducts);
     const [orderTotal, setOrderTotal] = useState(0);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -18,6 +21,14 @@ const OrderForm = () =>{
     const [paymentMethod, setPaymentMethod] = useState('');
     const [status, setStatus] = useState(null);
 
+    const getProductName = (productId) => {
+      for (const product of products) {
+        if (product.id === productId) {
+          return product.name;
+        }
+      }
+      return null;
+    }
 
     useEffect(() => {
         const totalAmount = cart.reduce((total, cartItem) => total + cartItem.price * cartItem.quantity, 0).toFixed(2);
@@ -26,6 +37,7 @@ const OrderForm = () =>{
 
     const handleOrderSubmit = async (e) => {
       e.preventDefault();
+      setStatus('loading')
 
       if (
         !name ||
@@ -38,19 +50,18 @@ const OrderForm = () =>{
         cart.length === 0
       ) {
         setStatus('clientError');
-        console.log(status);
         return;
       }
 
       const orderData = {
         name: name,
         email: email,
-        phone: phone,
+        phone: Number(phone),
         shippingStreet: street,
         shippingZip: zip,
         shippingCity: city,
         paymentMethod: paymentMethod,
-        orderTotal: orderTotal,
+        orderTotal: Number(orderTotal),
         cartProducts: cart,
       };
 
@@ -62,12 +73,17 @@ const OrderForm = () =>{
         body: JSON.stringify(orderData),
       };
       setStatus('loading');
-      console.log(status);
 
       fetch(`${API_URL}/api/orders`, options)
       .then((res) => {
-        console.log(res);
-        console.log(status);
+        if (res.status === 201) {
+          setStatus('success');
+          console.log('Need to clear cart');
+        } else if (res.status === 400) {
+          setStatus('clientError');
+        } else {
+          setStatus('serverError');
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -80,91 +96,126 @@ const OrderForm = () =>{
     return (
         <section style={{ width: '80%' }} className="m-auto">
             <h2>Order Summary</h2>
-            <ListGroup>
-                <ListGroup.Item variant="success">
-                <Row>
-                  <Col xs={12} sm={8} className={styles.bold_text}>
-                    Name
-                  </Col>
-                  <Col xs={6} sm={2}>
-                  </Col>
-                  <Col xs={6} sm={2} className={styles.bold_text}>
-                    Total Price
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            {cart.map((cartItem) => (
-              <ListGroup.Item key={cartItem.id}>
-                <Row>
-                  <Col xs={12} sm={8} className={styles.bold_text}>
-                    {cartItem.name}
-                  </Col>
-                  <Col xs={6} sm={2}>
-                    {cartItem.quantity} x {cartItem.price}$
-                  </Col>
-                  <Col xs={6} sm={2} className={styles.bold_text}>
-                    {cartItem.quantity * cartItem.price}$
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={12} sm={12}>
-                    Comment: {cartItem.comment}
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
 
-          <div className="mt-3 mb-3">
-            <h4>Order Total: {orderTotal}$</h4>
-          </div>
+            {status === 'clientError' && (
+              <Alert variant="danger">
+                Please fill in all required fields and make sure your cart is not empty.
+              </Alert>
+            )}
+            {status === 'serverError' && (
+              <Alert variant="danger">
+                Something went wrong. Please try again later.
+              </Alert>
+            )}
+            {status === 'success' && (
+              <div>
+                <Alert variant="success">
+                  Your order has been successfully submitted.
+                </Alert>
+                <Link to="/">
+                  <Button variant="outline-success">Continue Shopping</Button>
+                </Link>
+              </div>
+            )}
+            {cart.length === 0 && status !== 'success' && (
+              <div>
+                <Alert variant="info">Your cart is empty.</Alert>
+                <Link to="/">
+                  <Button variant="outline-success">Continue Shopping</Button>
+                </Link>
+              </div>
+            )}
+            {status !== 'success' && cart.length !== 0 && (
 
-          <div className="m-auto">
-            <Form className="mt-4">
-                <h2 className="my-4 text-center">Shipping Information:</h2>
-                <Form.Group className="mb-3">
-                    <Form.Label>Name:</Form.Label>
-                    <Form.Control type="text" value={name} placeholder="Enter your name" onChange={e => setName(e.target.value)}/>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Email:</Form.Label>
-                    <Form.Control type="email" value={email} placeholder="Enter your email" onChange={e => setEmail(e.target.value)}/>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Phone Number:</Form.Label>
-                    <Form.Control type="text" value={phone} placeholder="Enter your phone number" onChange={e => setPhone(e.target.value)}/>
-                </Form.Group>
-                <h4 className="mt-5 text-center">Address:</h4>
-                <Form.Group className="mb-3">
-                    <Form.Label>Street: </Form.Label>
-                    <Form.Control type="text" value={street} placeholder="Enter your street" onChange={e => setStreet(e.target.value)}/>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>ZIP code: </Form.Label>
-                    <Form.Control type="text" value={zip} placeholder="Enter your ZIP code" onChange={e => setZip(e.target.value)}/>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>City: </Form.Label>
-                    <Form.Control type="text" value={city} placeholder="Enter your City" onChange={e => setCity(e.target.value)}/>
-                </Form.Group>
-                <h4 className="mt-5 text-center">Payment:</h4>
-                <Form.Group className="mb-3">
-                    <Form.Label>Payment Method: </Form.Label>
-                    <Form.Control as="select" value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
+              <div>
+                <ListGroup>
+                  <ListGroup.Item variant="success" key="header">
+                    <Row key="header_content">
+                      <Col xs={12} sm={8} className={styles.bold_text}>
+                        Name
+                      </Col>
+                      <Col xs={6} sm={2}>
+                      </Col>
+                      <Col xs={6} sm={2} className={styles.bold_text}>
+                        Total Price
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                  {cart.map((cartItem) => (
+                  <ListGroup.Item key={cartItem.id}>
+                    <Row key={cartItem.id + '_detaials'}>
+                      <Col xs={12} sm={8} className={styles.bold_text}>
+                        {getProductName(cartItem.productId)}
+                      </Col>
+                      <Col xs={6} sm={2}>
+                        {cartItem.quantity} x {cartItem.price}$
+                      </Col>
+                      <Col xs={6} sm={2} className={styles.bold_text}>
+                        {cartItem.quantity * cartItem.price}$
+                      </Col>
+                    </Row>
+                    <Row key={cartItem.id + '_comment'}>
+                      <Col xs={12} sm={12}>
+                        Comment: {cartItem.comment}
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                  ))}
+                </ListGroup>
+
+                <div className="mt-3 mb-3">
+                  <h4>Order Total: {orderTotal}$</h4>
+                </div>
+
+                <div className="m-auto">
+                  <Form className="mt-4">
+                    <h2 className="my-4 text-center">Shipping Information:</h2>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Name:</Form.Label>
+                      <Form.Control type="text" value={name} placeholder="Enter your name" onChange={e => setName(e.target.value)}/>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Email:</Form.Label>
+                      <Form.Control type="email" value={email} placeholder="Enter your email" onChange={e => setEmail(e.target.value)}/>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Phone Number:</Form.Label>
+                      <Form.Control type="text" value={phone} placeholder="Enter your phone number" onChange={e => setPhone(e.target.value)}/>
+                    </Form.Group>
+                    <h4 className="mt-5 text-center">Address:</h4>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Street: </Form.Label>
+                      <Form.Control type="text" value={street} placeholder="Enter your street" onChange={e => setStreet(e.target.value)}/>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label>ZIP code: </Form.Label>
+                      <Form.Control type="text" value={zip} placeholder="Enter your ZIP code" onChange={e => setZip(e.target.value)}/>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label>City: </Form.Label>
+                      <Form.Control type="text" value={city} placeholder="Enter your City" onChange={e => setCity(e.target.value)}/>
+                    </Form.Group>
+                    <h4 className="mt-5 text-center">Payment:</h4>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Payment Method: </Form.Label>
+                      <Form.Control as="select" value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
                         <option value="" disabled>Select payment method</option>
                         <option>Credit Card</option>
                         <option>PayPal</option>
                         <option>Blick</option>
-                    </Form.Control>
-                </Form.Group>
-            </Form>
-          </div>
+                      </Form.Control>
+                    </Form.Group>
+                  </Form>
+                </div>
 
-          <div className="mt-5 text-end">
-            <Button variant="success" onClick={handleOrderSubmit}>
-              Send Order
-            </Button>
-          </div>
+                <div className="mt-5 text-end">
+                  <Button variant="success" onClick={handleOrderSubmit}>
+                    Send Order
+                  </Button>
+                </div>
+              </div>
+
+            )}
 
         </section>
     )

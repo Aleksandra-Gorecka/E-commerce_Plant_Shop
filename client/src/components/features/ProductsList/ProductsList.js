@@ -6,7 +6,6 @@ import ProductCart from "../ProductCart/ProductCart";
 const ProductsList = () =>{
 
     const products = useSelector(getAllProducts);
-    //console.log(ads);
 
     return (
         <section>
