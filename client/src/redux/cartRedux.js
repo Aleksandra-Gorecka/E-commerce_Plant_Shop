@@ -39,7 +39,7 @@ const cartReducer = (statePart = [], action) => {
       };
 
       case DELETE_CART_ITEM: 
-        return statePart.filter((product) => product.id !== action.payload);
+        return statePart.filter((cartItem) => cartItem.productId !== action.payload);
       
       case CLEAR_CART:
         return [];
