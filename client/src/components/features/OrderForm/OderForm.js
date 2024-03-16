@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-import { getCart } from "../../../redux/cartRedux";
+import { useSelector, useDispatch } from "react-redux";
+import { getCart, clearCart } from "../../../redux/cartRedux";
 import { Row, Col, ListGroup, Button, Form, Alert } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import styles from './OrderForm.module.scss';
@@ -11,6 +11,7 @@ const OrderForm = () =>{
 
     const cart = useSelector(getCart);
     const products = useSelector(getAllProducts);
+    const dispatch = useDispatch();
     const [orderTotal, setOrderTotal] = useState(0);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -78,7 +79,7 @@ const OrderForm = () =>{
       .then((res) => {
         if (res.status === 201) {
           setStatus('success');
-          console.log('Need to clear cart');
+          dispatch(clearCart())
         } else if (res.status === 400) {
           setStatus('clientError');
         } else {
@@ -130,7 +131,7 @@ const OrderForm = () =>{
               <div>
                 <ListGroup>
                   <ListGroup.Item variant="success" key="header">
-                    <Row key="header_content">
+                    <Row>
                       <Col xs={12} sm={8} className={styles.bold_text}>
                         Name
                       </Col>
@@ -142,8 +143,8 @@ const OrderForm = () =>{
                     </Row>
                   </ListGroup.Item>
                   {cart.map((cartItem) => (
-                  <ListGroup.Item key={cartItem.id}>
-                    <Row key={cartItem.id + '_detaials'}>
+                  <ListGroup.Item key={cartItem.productId}>
+                    <Row>
                       <Col xs={12} sm={8} className={styles.bold_text}>
                         {getProductName(cartItem.productId)}
                       </Col>
@@ -154,7 +155,7 @@ const OrderForm = () =>{
                         {cartItem.quantity * cartItem.price}$
                       </Col>
                     </Row>
-                    <Row key={cartItem.id + '_comment'}>
+                    <Row>
                       <Col xs={12} sm={12}>
                         Comment: {cartItem.comment}
                       </Col>
