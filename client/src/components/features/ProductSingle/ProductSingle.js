@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getProductById } from '../../../redux/productsRedux';
 import { Navigate } from "react-router-dom";
-import { Card, Col, Button, Carousel } from 'react-bootstrap';
+import { Card, Col, Button, Carousel, Row } from 'react-bootstrap';
 import styles from './ProductSingle.module.scss';
 import { IMGS_URL } from "../../../config";
 import QuantityWidget from "../../common/QuantityWidget/QuanityWidget";
@@ -14,7 +14,6 @@ const ProductSingle = () =>{
     const { id } = useParams();
     const productData = useSelector(state => getProductById(state, id));
     const dispatch = useDispatch();
-    console.log(productData.gallery);
 
     const [quantity, setQuantity] = useState(1);
 
@@ -33,14 +32,28 @@ const ProductSingle = () =>{
     if (!productData) return <Navigate to={'/'} />;
     return (
         <section>
-            <div className="d-flex justify-content-center">
-				<Col className="py-4 d-flex justify-content-center">
-                    <Carousel style={{ maxWidth: '280px' }}>
-                    photos
+            <Row className="d-flex justify-content-center">
+				<Col xs={12} sm={6} className="py-4 d-flex justify-content-center">
+                    <Carousel style={{ maxHeight: '400px' , maxWidth: '280px' }}>
+                        <Carousel.Item key={'cover'}>
+						        <Card.Img 
+                                    className={`mx-auto ${styles.cartImg}`}
+							        src={IMGS_URL + productData.image}
+                                    alt={productData.name}
+						        />
+                        </Carousel.Item>
+                        {productData.gallery.map((photo, index) => (
+                            <Carousel.Item key={index}>
+                                    <Card.Img
+                                        className={`mx-auto ${styles.cartImg}`}
+                                        src={IMGS_URL + photo.image}
+                                    />
+                                </Carousel.Item>
+                            ))}
                     </Carousel>
                     
 				</Col>
-                <Col className="py-4 d-flex align-items-stretch">
+                <Col xs={12} sm={6} className="py-4 d-flex align-items-stretch">
                     <Card border="light">
                         <Card.Title className="text-center p-2">{productData.name}</Card.Title>
                         <Card.Body className="d-flex flex-column justify-content-space-between">
@@ -63,7 +76,7 @@ const ProductSingle = () =>{
 						</Card.Body>
                     </Card>
                 </Col>
-			</div>
+			</Row>
         </section>
     )
 }

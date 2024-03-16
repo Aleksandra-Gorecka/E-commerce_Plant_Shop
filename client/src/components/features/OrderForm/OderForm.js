@@ -203,7 +203,7 @@ const OrderForm = () =>{
                         <option value="" disabled>Select payment method</option>
                         <option>Credit Card</option>
                         <option>PayPal</option>
-                        <option>Blick</option>
+                        <option>BLIK</option>
                       </Form.Control>
                     </Form.Group>
                   </Form>
