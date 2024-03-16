@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getProductById } from '../../../redux/productsRedux';
 import { Navigate } from "react-router-dom";
-import { Card, Col, Button } from 'react-bootstrap';
+import { Card, Col, Button, Carousel } from 'react-bootstrap';
 import styles from './ProductSingle.module.scss';
 import { IMGS_URL } from "../../../config";
 import QuantityWidget from "../../common/QuantityWidget/QuanityWidget";
@@ -14,6 +14,7 @@ const ProductSingle = () =>{
     const { id } = useParams();
     const productData = useSelector(state => getProductById(state, id));
     const dispatch = useDispatch();
+    console.log(productData.gallery);
 
     const [quantity, setQuantity] = useState(1);
 
@@ -34,12 +35,10 @@ const ProductSingle = () =>{
         <section>
             <div className="d-flex justify-content-center">
 				<Col className="py-4 d-flex justify-content-center">
-					<Card className="text-center">
-						<Card.Img 
-                            className={`mx-auto ${styles.cartImg}`}
-							src={IMGS_URL + productData.image}
-						/>
-					</Card>
+                    <Carousel style={{ maxWidth: '280px' }}>
+                    photos
+                    </Carousel>
+                    
 				</Col>
                 <Col className="py-4 d-flex align-items-stretch">
                     <Card border="light">

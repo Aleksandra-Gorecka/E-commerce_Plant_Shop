@@ -77,6 +77,8 @@ function getProducts() {
 }
 
 async function seed() {
+  await db.product.deleteMany();
+
   await Promise.all(
     getProducts().map((product) => {
       return db.product.create({ data: product });
