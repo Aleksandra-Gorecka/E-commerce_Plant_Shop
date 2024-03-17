@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getCart, clearCart } from "../../../redux/cartRedux";
-import { Row, Col, ListGroup, Button, Form, Alert } from 'react-bootstrap';
+import { Row, Col, ListGroup, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import styles from './OrderForm.module.scss';
 import { API_URL } from "../../../config";
@@ -95,8 +95,8 @@ const OrderForm = () =>{
     };
 
     return (
-        <section style={{ width: '80%' }} className="m-auto">
-            <h2>Order Summary</h2>
+        <section style={{ width: '90%' }} className="m-auto">
+            <h2 className="mb-4 text-center">Order Summary</h2>
 
             {status === 'clientError' && (
               <Alert variant="danger">
@@ -109,24 +109,31 @@ const OrderForm = () =>{
               </Alert>
             )}
             {status === 'success' && (
-              <div>
+              <div className="text-center">
                 <Alert variant="success">
                   Your order has been successfully submitted.
                 </Alert>
                 <Link to="/">
-                  <Button variant="outline-success">Continue Shopping</Button>
+                  <Button variant="outline-success" className="shadow-none">Continue Shopping</Button>
                 </Link>
+              </div>
+            )}
+            {status === 'loading' && (
+              <div className="text-center">
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
               </div>
             )}
             {cart.length === 0 && status !== 'success' && (
-              <div>
+              <div className="text-center">
                 <Alert variant="info">Your cart is empty.</Alert>
                 <Link to="/">
-                  <Button variant="outline-success">Continue Shopping</Button>
+                  <Button variant="outline-success" className="shadow-none">Continue Shopping</Button>
                 </Link>
               </div>
             )}
-            {status !== 'success' && cart.length !== 0 && (
+            {status !== 'success' && status !== 'loading' && cart.length !== 0 && (
 
               <div>
                 <ListGroup>
@@ -137,7 +144,7 @@ const OrderForm = () =>{
                       </Col>
                       <Col xs={6} sm={2}>
                       </Col>
-                      <Col xs={6} sm={2} className={styles.bold_text}>
+                      <Col xs={6} sm={2} className={`text-center ${styles.bold_text}`}>
                         Total Price
                       </Col>
                     </Row>
@@ -151,7 +158,7 @@ const OrderForm = () =>{
                       <Col xs={6} sm={2}>
                         {cartItem.quantity} x {cartItem.price}$
                       </Col>
-                      <Col xs={6} sm={2} className={styles.bold_text}>
+                      <Col xs={6} sm={2} className={`text-center ${styles.bold_text}`}>
                         {cartItem.quantity * cartItem.price}$
                       </Col>
                     </Row>
@@ -164,11 +171,11 @@ const OrderForm = () =>{
                   ))}
                 </ListGroup>
 
-                <div className="mt-3 mb-3">
+                <div className="mt-3 mb-3 text-end">
                   <h4>Order Total: {orderTotal}$</h4>
                 </div>
 
-                <div className="m-auto">
+                <div className="m-auto d-flex justify-content-center">
                   <Form className="mt-4">
                     <h2 className="my-4 text-center">Shipping Information:</h2>
                     <Form.Group className="mb-3">
@@ -210,7 +217,7 @@ const OrderForm = () =>{
                 </div>
 
                 <div className="mt-5 text-end">
-                  <Button variant="success" onClick={handleOrderSubmit}>
+                  <Button variant="success" className="shadow-none" onClick={handleOrderSubmit}>
                     Send Order
                   </Button>
                 </div>

@@ -1,4 +1,4 @@
-import { Card, Row, Col, Form, Button } from "react-bootstrap"
+import { Card, Row, Col, Form, Button, Modal } from "react-bootstrap"
 import { IMGS_URL } from "../../../config";
 import QuantityWidget from "../../common/QuantityWidget/QuanityWidget";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,6 +9,7 @@ import { updateCart } from "../../../redux/cartRedux";
 import { deleteCartItem } from "../../../redux/cartRedux";
 import { useEffect, useState } from 'react';
 import { getProductById } from '../../../redux/productsRedux';
+import PropTypes from 'prop-types';
 
 const CartItem = ({price, quantity, productId, comment }) =>{
 
@@ -19,6 +20,10 @@ const CartItem = ({price, quantity, productId, comment }) =>{
     const [quantityUpdate, setQuantityUpdate] = useState(quantity);
     const [commentUpdate, setCommentUpdate] = useState(comment || '');
     const [commentForm, setCommentForm] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+
+    const handleShowModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
 
     const dispatch = useDispatch();
 
@@ -85,7 +90,7 @@ const CartItem = ({price, quantity, productId, comment }) =>{
                             />
                         </Col>
                         <Col>
-                            <Button variant="outline-success" onClick={handleCartUpdate} >Add comment</Button>
+                            <Button variant="outline-success" className="shadow-none" onClick={handleCartUpdate} >Add comment</Button>
                         </Col>
                     </>
                 ) : ( 
@@ -94,16 +99,43 @@ const CartItem = ({price, quantity, productId, comment }) =>{
                             <div>Comment: {commentUpdate}</div>
                         </Col>
                         <Col>
-                            <Button variant="success" onClick={handleCommentForm} >Edit comment</Button>
+                            <Button variant="success" className="shadow-none" onClick={handleCommentForm} >Edit comment</Button>
                         </Col>
                     </>
                 )} 
                 <Col className="d-flex justify-content-end align-items-end">
-                    <FontAwesomeIcon icon={faTrashCan} className={styles.trashIcon} onClick={handleDeleteFromCart}/>
+                    <FontAwesomeIcon icon={faTrashCan} className={styles.trashIcon} onClick={handleShowModal}/>
                 </Col>
             </Row>
+
+            <Modal show={showModal} onHide={handleCloseModal}>
+				<Modal.Header closeButton>
+					<Modal.Title>Are you sure?</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<p>
+						This operation will completely remove this product from your cart.
+						<br /> Are you sure you want to do that?
+					</p>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button onClick={handleCloseModal} variant="secondary">
+						Cancel
+					</Button>
+					<Button onClick={handleDeleteFromCart} variant="danger" className="shadow-none" >
+						Remove Product
+					</Button>
+				</Modal.Footer>
+			</Modal>
         </Card>
     )
 }
+
+CartItem.propTypes = {
+    price: PropTypes.number.isRequired,
+    quantity: PropTypes.number.isRequired,
+    productId: PropTypes.string.isRequired,
+    comment: PropTypes.string,
+};
 
 export default CartItem;

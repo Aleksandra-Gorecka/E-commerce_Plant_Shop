@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import styles from './QuantityWidget.module.scss';
 import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 
 const QuantityWidget = ({ onCountChange, initialValue }) =>{
 
@@ -30,15 +31,20 @@ const QuantityWidget = ({ onCountChange, initialValue }) =>{
 
     return (
         <section className="d-flex align-items-center">
-            <Button variant="success m-1" className={styles.btn} onClick={decreaseProductCount}>
+            <Button variant="success m-1" className={`shadow-none ${styles.btn}`} onClick={decreaseProductCount}>
                 <FontAwesomeIcon icon={faMinus} />
             </Button>
             <input className={styles.amount} type="text" value={productCount} onChange={handleProductCount}></input>
-            <Button variant="success m-1" className={styles.btn} onClick={increaseProductCount}>
+            <Button variant="success m-1" className={`shadow-none ${styles.btn}`} onClick={increaseProductCount}>
                 <FontAwesomeIcon icon={faPlus} />
             </Button>
         </section>
     )
 }
+
+QuantityWidget.propTypes = {
+  onCountChange: PropTypes.func.isRequired,
+  initialValue: PropTypes.number,
+};
 
 export default QuantityWidget;

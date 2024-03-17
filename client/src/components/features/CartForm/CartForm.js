@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import { getCart } from "../../../redux/cartRedux";
-import { Row, Col, Button, Nav } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import CartItem from "../CartItem/CartItem";
-import { NavLink } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const CartForm = () =>{
 
@@ -16,7 +16,12 @@ const CartForm = () =>{
         <section>
             <Row className='mx-1 text-center'><h2>Your Cart</h2></Row>
             {cart.length === 0 ? (
-                <Row className='mx-1 p-4 text-center'><p>Your Cart is empty.</p></Row>
+                <div className='mx-1 p-4 text-center'>
+                    <Row><p>Your Cart is empty.</p></Row>
+                    <Link to="/">
+                        <Button variant="outline-success" className="shadow-none">Continue Shopping</Button>
+                    </Link>
+                </div>
                 ) : (
             <>
                 <Row className="d-flex flex-wrap justify-content-center p-0 my-4 ms-auto">
@@ -35,13 +40,13 @@ const CartForm = () =>{
                         <h2>Total: ${totalAmount}</h2>
                     </Col>
                     <Col className="d-flex justify-content-end">
-                        <Nav.Link to="/ordersummary" as={NavLink}>
-                            <Button variant="success">Order Summary</Button>
-                        </Nav.Link>
+                        <Link to="/ordersummary">
+                            <Button variant="success" className="shadow-none">Order Summary</Button>
+                        </Link>
                     </Col>
                 </Row>
             </>
-      )}
+            )}
         </section>
     )
 }

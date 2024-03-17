@@ -16,7 +16,7 @@ const ProductsList = () =>{
             }
             <Row className="d-flex flex-wrap justify-content-center p-0 my-4 ms-auto">
                 {products.map(product => (
-                    <ProductCart key={ product.id } name={ product.name } price={ product.price } description={ product.description} image={ product.image} id={ product.id} />
+                    <ProductCart key={ product.id } name={ product.name } price={ product.price } image={ product.image} id={ product.id} />
                 ))}
             </Row>
         </section>
