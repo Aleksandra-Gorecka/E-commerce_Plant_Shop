@@ -41,7 +41,7 @@ const OrderForm = () =>{
     }, [cart]);
 
 
-    const handleEmailChange = (e) => {
+    const handleEmail = (e) => {
       const { value } = e.target;
       setEmail(value);
       const emailPattern = /^\S+@\S+$/i;
@@ -52,7 +52,7 @@ const OrderForm = () =>{
       }
     };
 
-    const handlePhoneChange = (e) => {
+    const handlePhone = (e) => {
       const { value } = e.target;
       setPhone(value);
       const phonePattern = /^\d{9}$/;
@@ -65,7 +65,7 @@ const OrderForm = () =>{
       }
     };
 
-    const handleZipChange = (e) => {
+    const handleZip = (e) => {
       const { value } = e.target;
       setZip(value);
       const zipPattern = /^[0-9-]*$/;
@@ -195,10 +195,10 @@ const OrderForm = () =>{
                         {getProductName(cartItem.productId)}
                       </Col>
                       <Col xs={6} sm={2}>
-                        {cartItem.quantity} x {cartItem.price}$
+                        {cartItem.quantity} x ${cartItem.price}
                       </Col>
                       <Col xs={6} sm={2} className={`text-center ${styles.bold_text}`}>
-                        {cartItem.quantity * cartItem.price}$
+                        ${cartItem.quantity * cartItem.price}
                       </Col>
                     </Row>
                     <Row>
@@ -210,8 +210,8 @@ const OrderForm = () =>{
                   ))}
                 </ListGroup>
 
-                <div className="mt-3 mb-3 text-end">
-                  <h4>Order Total: {orderTotal}$</h4>
+                <div className="mt-3 mb-3 me-5 text-end">
+                  <h4>Order Total: ${orderTotal}</h4>
                 </div>
 
                 <div className="m-auto d-flex justify-content-center">
@@ -227,7 +227,7 @@ const OrderForm = () =>{
                       <Form.Label>Email:</Form.Label>
                       <Form.Control 
                         {...register("email", { required: true })}
-                        type="email" value={email} placeholder="Enter your email" onChange={handleEmailChange}/>
+                        type="email" value={email} placeholder="Enter your email" onChange={handleEmail}/>
                         {errors.email && errors.email.type === "required" && (
                           <small className="d-block form-text text-danger mt-2">Email is required</small>
                         )}
@@ -238,7 +238,7 @@ const OrderForm = () =>{
                     <Form.Group className="mb-3" controlId="phone">
                       <Form.Label>Phone Number:</Form.Label>
                       <Form.Control {...register("phone", { required: true })}
-                        type="text" value={phone} placeholder="Enter your phone number" onChange={handlePhoneChange}/>
+                        type="text" value={phone} placeholder="Enter your phone number" onChange={handlePhone}/>
                         {errors.phone && errors.phone.type === "required" && (
                           <small className="d-block form-text text-danger mt-2">Phone number is required</small>
                         )}
@@ -256,7 +256,7 @@ const OrderForm = () =>{
                     <Form.Group className="mb-3" controlId="zip">
                       <Form.Label>ZIP code: </Form.Label>
                       <Form.Control {...register("zip", { required: true })}
-                        type="text" value={zip} placeholder="Enter your ZIP code" onChange={handleZipChange}/>
+                        type="text" value={zip} placeholder="Enter your ZIP code" onChange={handleZip}/>
                         {errors.zip && errors.zip.type === "required" && (
                           <small className="d-block form-text text-danger mt-2">ZIP code is required</small>
                         )}

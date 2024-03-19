@@ -70,7 +70,7 @@ const ProductSingle = () =>{
                             <div className="mt-auto">
                                 <p>
 								    <b>Price: </b>
-								    {productData.price}$
+								    ${productData.price}
 							    </p>
                                 <div className="d-flex">
                                     <QuantityWidget onCountChange={handleCountChange}/>
