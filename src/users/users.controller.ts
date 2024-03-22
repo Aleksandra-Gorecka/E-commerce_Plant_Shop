@@ -5,9 +5,11 @@ import {
   Param,
   ParseUUIDPipe,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from '@prisma/client';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -26,6 +28,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   public async deleteById(@Param('id', new ParseUUIDPipe()) id: string) {
     if (!(await this.usersService.getById(id)))
       throw new NotFoundException('User not found');
