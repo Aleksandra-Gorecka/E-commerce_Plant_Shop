@@ -35,6 +35,10 @@ class OrderDTO {
   name: string;
 
   @IsNotEmpty()
+  @IsString()
+  userId: string;
+
+  @IsNotEmpty()
   @IsEmail()
   email: string;
 
