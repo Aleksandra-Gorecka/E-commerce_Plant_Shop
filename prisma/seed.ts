@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
 const db = new PrismaClient();
 
 function getProducts() {
@@ -76,12 +76,35 @@ function getProducts() {
   ];
 }
 
+function getUsers() {
+  return [
+    {
+      id: 'fd100000-0f0d-4a9f-bc41-c559c8a17125',
+      email: 'admin@mail.com',
+      role: Role.ADMIN,
+      password: {
+        create: {
+          hashedPassword:
+            '$2a$10$/64cmk2ozCiQktIIIufbnOFwJUBcsOlh4PL68Nlh7OJ0jesADQjJ2',
+        },
+      },
+    },
+  ];
+}
+
 async function seed() {
   await db.product.deleteMany();
+  await db.user.deleteMany();
 
   await Promise.all(
     getProducts().map((product) => {
       return db.product.create({ data: product });
+    }),
+  );
+
+  await Promise.all(
+    getUsers().map((user) => {
+      return db.user.create({ data: user });
     }),
   );
 }

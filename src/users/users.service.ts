@@ -29,7 +29,7 @@ export class UsersService {
   ): Promise<(User & { password: Password }) | null> {
     return this.prismaService.user.findUnique({
       where: { email },
-      include: { password: true, orders: true },
+      include: { password: true },
     });
   }
 
