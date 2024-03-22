@@ -2,6 +2,7 @@ const initialState = {
     products: [],
     orders: [],
     cart: [],
+    user: null,
 };
 
 
