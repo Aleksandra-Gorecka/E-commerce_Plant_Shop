@@ -18,7 +18,7 @@ const Footer = () => {
           <FontAwesomeIcon icon={faTwitter} size="2x" className={`mx-2 ${styles.icon}`} />
         </a>
       </div>
-      <p className="mt-4">Copyright © Flora Market 2024</p>
+      <p className="mt-4">Copyright &copy; Flora Market {new Date().getFullYear()}</p>
     </div>
   </footer>
     )

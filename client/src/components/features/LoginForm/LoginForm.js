@@ -1,5 +1,5 @@
 import { Form, Button, Alert, Spinner } from 'react-bootstrap';
-import { API_URL } from '../../../config';
+import { AUTH_URL } from '../../../config';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -39,32 +39,17 @@ const LoginForm = () =>{
 			},
 			body: JSON.stringify(userData),
 		};
-        console.log(userData);
 
 		setStatus('loading');
-		fetch(`${API_URL}/api/auth/login`, options)
+		fetch(`${AUTH_URL}/login`, options)
 			.then(res => {
 				if (res.status === 201) {
-                    console.log('tu');
-					setTimeout(() => {
-						setStatus('success');
-						fetch(`${API_URL}/auth/users`)
-							.then(res => {
-								if (res.status === 200) {
-									return res.json();
-								} else {
-									throw new Error('Failed');
-								}
-							})
-							.then(data => {
-								dispatch(logIn({ email: data.user, id: data.id }));
-							})
-							.catch(e => {
-							});
-					}, 400);
+                    setStatus('success');
+                    dispatch(logIn({ email }));
+                    localStorage.setItem('user', JSON.stringify(userData));
 					setTimeout(() => {
 						navigate('/');
-					}, 2000);
+					}, 3000);
 				} else if (res.status === 401) {
 					setStatus('clientError');
 				} else {

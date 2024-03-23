@@ -1,6 +1,6 @@
 import { Form, Button, Alert, Spinner, Container } from 'react-bootstrap';
 import { useState } from 'react';
-import { API_URL } from '../../../config';
+import { AUTH_URL } from '../../../config';
 import { useForm } from 'react-hook-form';
 
 const SignUpForm = () =>{
@@ -40,7 +40,7 @@ const SignUpForm = () =>{
         setStatus('loading');
 
         
-        fetch(`${API_URL}/api/auth/register`, options)
+        fetch(`${AUTH_URL}/register`, options)
             .then(res => {
                 if (res.status === 201) {
                     setStatus('success');

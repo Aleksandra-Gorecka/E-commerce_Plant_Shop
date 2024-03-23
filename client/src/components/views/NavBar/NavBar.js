@@ -5,11 +5,10 @@ import { faBasketShopping, faBars } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react'
 import { getCart } from "../../../redux/cartRedux";
 import { useSelector } from "react-redux";
-import { getLoggedUser } from "../../../redux/usersRedux";
 
 const NavBar = () =>{
 
-    const loggedUser = useSelector(getLoggedUser);
+    const user = useSelector((state) => state.user);
     const [expanded, setExpanded] = useState(false);
     const toggleExpanded = () => setExpanded(!expanded);
 
@@ -30,20 +29,19 @@ const NavBar = () =>{
                         <Nav.Link to="/" as={NavLink}>
                             Home
                         </Nav.Link>
-                        {!loggedUser && (
+                        {!user || user===null ? (
                             <>
                                 <Nav.Link as={NavLink} to="/login">
 						            Login
 						        </Nav.Link>
-                                <Nav.Link as={NavLink} to="/register">
-                                    Register
+                                <Nav.Link as={NavLink} to="/sign-up">
+                                    Sign up
                                 </Nav.Link>
                             </>
-                        )}
-                        {loggedUser && (
+                        ) : (
                             <>
                                 <Nav.Link to="/logout" as={NavLink}>
-                                    Sign out
+                                    Logout
                                 </Nav.Link>
                             </>
                         )}

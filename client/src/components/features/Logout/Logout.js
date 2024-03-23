@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { API_URL } from '../../../config';
+import { AUTH_URL } from '../../../config';
 import { logOut } from '../../../redux/usersRedux';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -14,8 +14,9 @@ const LogoutForm = () =>{
             method: 'DELETE',
         }
 
-        fetch(`${API_URL}/api/auth/logout`, options)
+        fetch(`${AUTH_URL}/logout`, options)
         .then (() => {
+            localStorage.removeItem('user');
             dispatch(logOut());
             setTimeout(() => {
                 navigate('/');

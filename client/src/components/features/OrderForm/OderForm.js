@@ -114,7 +114,7 @@ const OrderForm = () =>{
       };
       setStatus('loading');
 
-      fetch(`${API_URL}/api/orders`, options)
+      fetch(`${API_URL}/orders`, options)
       .then((res) => {
         if (res.status === 201) {
           setStatus('success');
