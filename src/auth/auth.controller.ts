@@ -2,6 +2,7 @@ import {
   Controller,
   Post,
   Delete,
+  Get,
   Body,
   UseGuards,
   Request,
@@ -29,6 +30,12 @@ export class AuthController {
     res.send({
       message: 'success',
     });
+  }
+
+  @Get('user')
+  @UseGuards(JwtAuthGuard)
+  getUser(@Request() req) {
+    return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
