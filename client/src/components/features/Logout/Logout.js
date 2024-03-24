@@ -3,6 +3,7 @@ import { AUTH_URL } from '../../../config';
 import { logOut } from '../../../redux/usersRedux';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { clearCart } from '../../../redux/cartRedux';
 
 const LogoutForm = () =>{
 
@@ -17,6 +18,8 @@ const LogoutForm = () =>{
         fetch(`${AUTH_URL}/logout`, options)
         .then (() => {
             localStorage.removeItem('user');
+            localStorage.removeItem('cart');
+            dispatch(clearCart())
             dispatch(logOut());
             setTimeout(() => {
                 navigate('/');

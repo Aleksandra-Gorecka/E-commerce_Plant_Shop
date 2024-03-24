@@ -49,7 +49,7 @@ const LoginForm = () =>{
                     localStorage.setItem('user', JSON.stringify(userData));
 					setTimeout(() => {
 						navigate('/');
-					}, 3000);
+					}, 2000);
 				} else if (res.status === 401) {
 					setStatus('clientError');
 				} else {

@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchProducts } from './redux/productsRedux';
 import { Container } from 'react-bootstrap';
@@ -14,14 +14,34 @@ import SignUp from './components/pages/SignUp/SignUp';
 import Login from './components/pages/Login/Login';
 import Logout from './components/pages/Logout/Logout';
 import { checkLoggedUser } from './utils/checkLoggedUser';
+import { localStorageCart } from './utils/localStorageCart';
+import { saveCartToLocalStorage } from './redux/cartRedux';
+import { useState } from "react";
 
 const App = () => {
-
   const dispatch = useDispatch();
+  const cart = useSelector(state => state.cart);
+  const [localStorageCartExecuted, setLocalStorageCartExecuted] = useState(false);
+
+  useEffect(() => {
+    const executeFirstEffect = async () => {
+      await localStorageCart(dispatch);
+      setLocalStorageCartExecuted(true);
+    }
+    executeFirstEffect();
+  }, []);
+
+  useEffect(() => {
+    if (localStorageCartExecuted) {
+      dispatch(saveCartToLocalStorage(cart));
+    }
+  }, [ cart, dispatch, localStorageCartExecuted ]);
+
   useEffect(() => {
     dispatch(fetchProducts());
     checkLoggedUser(dispatch);
   }, [dispatch]);
+
 
   return (
     <Container>
