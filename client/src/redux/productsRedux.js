@@ -3,6 +3,8 @@ import { API_URL } from '../config';
 //selectors
 export const getAllProducts = ({ products }) => products;
 export const getProductById = ({ products }, id) => products.find(product => product.id === id);
+export const getSearchedPoducts = ({ products }, searchPhrase ) =>
+  products.filter(product => product.name.toLowerCase().includes(searchPhrase.toLowerCase()) );
 
 //actions
 const createActionName = actionName => `app/products/${actionName}`;

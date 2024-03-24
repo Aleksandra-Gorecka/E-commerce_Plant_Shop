@@ -17,6 +17,7 @@ import { checkLoggedUser } from './utils/checkLoggedUser';
 import { localStorageCart } from './utils/localStorageCart';
 import { saveCartToLocalStorage } from './redux/cartRedux';
 import { useState } from "react";
+import Search from './components/pages/Search/Search';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ const App = () => {
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/search/:searchPhrase" element={<Search />} />
         </Routes>
         <Footer />
     </Container>
