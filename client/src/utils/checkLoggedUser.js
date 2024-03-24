@@ -23,7 +23,6 @@ export const checkLoggedUser = async (dispatch) => {
         ) {
           dispatch(logIn(userData.email));
           localStorage.setItem('user', JSON.stringify(userData));
-          console.log('from server: ', userData);
         }
       }
     }

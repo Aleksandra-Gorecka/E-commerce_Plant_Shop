@@ -16,6 +16,14 @@ const LoginForm = () =>{
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    // Funkcja do ręcznego odkodowywania tokenu JWT
+const parseJwt = (token) => {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`).join(''));
+    return JSON.parse(jsonPayload);
+};
+
     const handleLoginSubmit = () => {
         setStatus('loading');
 
@@ -27,7 +35,7 @@ const LoginForm = () =>{
             return;
         }
 
-        const userData = {
+        const userLoginData = {
             email: email,
             password: password,
         };
@@ -37,7 +45,8 @@ const LoginForm = () =>{
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(userData),
+			body: JSON.stringify(userLoginData),
+            credentials: 'include',
 		};
 
 		setStatus('loading');
@@ -46,7 +55,6 @@ const LoginForm = () =>{
 				if (res.status === 201) {
                     setStatus('success');
                     dispatch(logIn({ email }));
-                    localStorage.setItem('user', JSON.stringify(userData));
 					setTimeout(() => {
 						navigate('/');
 					}, 2000);

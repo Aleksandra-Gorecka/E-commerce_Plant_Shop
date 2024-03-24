@@ -10,10 +10,12 @@ import { useForm } from 'react-hook-form';
 
 const OrderForm = () =>{
 
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const user = useSelector((state) => state.user);
     const cart = useSelector(getCart);
     const products = useSelector(getAllProducts);
     const dispatch = useDispatch();
-    const { register, handleSubmit, formState: { errors }, setValue, setError } = useForm();
+    const { register, handleSubmit, formState: { errors }, setError } = useForm();
 
 
     const [orderTotal, setOrderTotal] = useState(0);
@@ -24,7 +26,13 @@ const OrderForm = () =>{
     const [zip, setZip] = useState('');
     const [city, setCity] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('');
+    const [userId, ] = useState(userData?.id);
     const [status, setStatus] = useState(null);
+
+    useEffect(() => {
+      if (!user) setStatus('loginError'); 
+      if (user) setStatus(null);
+    }, [user]); 
 
     const getProductName = (productId) => {
       for (const product of products) {
@@ -79,6 +87,10 @@ const OrderForm = () =>{
     const handleOrderSubmit = async () => {
       setStatus('loading')
 
+      if (!userId) {
+        setStatus('loginError');
+        return;
+      }
       if (
         !name ||
         !email ||
@@ -103,7 +115,10 @@ const OrderForm = () =>{
         paymentMethod: paymentMethod,
         orderTotal: Number(orderTotal),
         cartProducts: cart,
+        userId: userId,
       };
+
+      console.log(orderData);
 
       const options = {
         method: 'POST',
@@ -111,6 +126,7 @@ const OrderForm = () =>{
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(orderData),
+        credentials: 'include',
       };
       setStatus('loading');
 
@@ -135,7 +151,23 @@ const OrderForm = () =>{
 
     return (
         <section style={{ width: '90%' }} className="m-auto">
-            <h2 className="mb-4 text-center">Order Summary</h2>
+
+          { status === 'loginError' && (
+            <div className="text-center">
+              <Alert variant="danger">
+                <p>
+						      You need to be logged in.
+						      <br /> Please log in or sign up to be able proceed with your order.
+					      </p>
+              </Alert>
+                <Link to="/login" className="mx-2">
+                  <Button variant="outline-success" className="shadow-none">Login</Button>
+                </Link>
+                <Link to="/sign-up" className="mx-2">
+                  <Button variant="outline-success" className="shadow-none">Sign Up</Button>
+                </Link>
+          </div>
+          )}
 
             {status === 'clientError' && (
               <Alert variant="danger">
@@ -164,7 +196,7 @@ const OrderForm = () =>{
                 </Spinner>
               </div>
             )}
-            {cart.length === 0 && status !== 'success' && (
+            {cart.length === 0 && status !== 'success' && status !== 'loginError' && (
               <div className="text-center">
                 <Alert variant="info">Your cart is empty.</Alert>
                 <Link to="/">
@@ -172,9 +204,10 @@ const OrderForm = () =>{
                 </Link>
               </div>
             )}
-            {status !== 'success' && status !== 'loading' && cart.length !== 0 && (
-
+            {status !== 'success' && status !== 'loading' && status !== 'loginError' && cart.length !== 0 && (
+              
               <div>
+                <h2 className="mb-4 text-center">Order Summary</h2>
                 <ListGroup>
                   <ListGroup.Item variant="success" key="header">
                     <Row>

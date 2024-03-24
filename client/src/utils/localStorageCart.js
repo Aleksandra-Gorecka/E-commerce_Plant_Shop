@@ -6,9 +6,7 @@ export const localStorageCart = async (dispatch) => {
 
     if (localStorageCart && localStorageCart.length > 0 ) {
       dispatch(updateFromLocalStorage(localStorageCart));
-    } else {
-      console.log('localStorage is empty');
-    }
+    } 
   } catch (error) {
     console.error('Error while checking localStorage:', error);
   }

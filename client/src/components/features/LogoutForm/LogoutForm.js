@@ -13,6 +13,7 @@ const LogoutForm = () =>{
     useEffect(() => {
         const options = {
             method: 'DELETE',
+            credentials: 'include',
         }
 
         fetch(`${AUTH_URL}/logout`, options)
