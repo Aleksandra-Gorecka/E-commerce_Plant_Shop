@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchProducts } from './redux/productsRedux';
-import { Container } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
 import Header from './components/views/Header/Header'
 import Footer from './components/views/Footer/Footer'
 import { Routes, Route } from 'react-router-dom';
@@ -21,28 +21,31 @@ import { useState } from "react";
 const App = () => {
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart);
-  const [localStorageCartExecuted, setLocalStorageCartExecuted] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
-    const executeFirstEffect = async () => {
+    const fetchData = async () => {
       await localStorageCart(dispatch);
-      setLocalStorageCartExecuted(true);
+      setIsDataLoaded(true);
     }
-    executeFirstEffect();
+    fetchData();
   }, []);
 
   useEffect(() => {
-    if (localStorageCartExecuted) {
+    if (isDataLoaded) {
       dispatch(saveCartToLocalStorage(cart));
     }
-  }, [ cart, dispatch, localStorageCartExecuted ]);
+  }, [ cart, dispatch, isDataLoaded ]);
 
   useEffect(() => {
-    dispatch(fetchProducts());
-    checkLoggedUser(dispatch);
+    const fetchData = async () => {
+      dispatch(fetchProducts());
+      await checkLoggedUser(dispatch);
+    }
+      fetchData();
   }, [dispatch]);
 
-
+  
   return (
     <Container>
         <Header />
@@ -50,8 +53,8 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/ordersummary" element={<OrderSummary />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/ordersummary" element={<OrderSummary />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />

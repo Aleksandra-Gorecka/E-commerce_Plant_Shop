@@ -7,6 +7,7 @@ export const checkLoggedUser = async (dispatch) => {
 
     if (userData && userData.email !== undefined && userData.email !== null) {
       dispatch(logIn(userData.email));
+      console.log('localStorage user: ', userData);
     } else {
       const response = await fetch(`${AUTH_URL}/user`, {
         method: 'GET',
@@ -23,6 +24,7 @@ export const checkLoggedUser = async (dispatch) => {
         ) {
           dispatch(logIn(userData.email));
           localStorage.setItem('user', JSON.stringify(userData));
+          console.log('server user: ', userData);
         }
       }
     }

@@ -11,12 +11,11 @@ import { useForm } from 'react-hook-form';
 const OrderForm = () =>{
 
     const userData = JSON.parse(localStorage.getItem('user'));
-    const user = useSelector((state) => state.user);
+    console.log('userData from local storge (OrderForm): ',userData);
     const cart = useSelector(getCart);
     const products = useSelector(getAllProducts);
     const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors }, setError } = useForm();
-
 
     const [orderTotal, setOrderTotal] = useState(0);
     const [name, setName] = useState('');
@@ -30,9 +29,10 @@ const OrderForm = () =>{
     const [status, setStatus] = useState(null);
 
     useEffect(() => {
-      if (!user) setStatus('loginError'); 
-      if (user) setStatus(null);
-    }, [user]); 
+      if (!userData) setStatus('loginError'); 
+      if (userData) setStatus(null);
+      console.log('userData check for OrderForm: ',userData);
+    }, [userData]); 
 
     const getProductName = (productId) => {
       for (const product of products) {

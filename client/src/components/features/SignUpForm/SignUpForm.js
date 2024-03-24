@@ -2,6 +2,7 @@ import { Form, Button, Alert, Spinner, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import { AUTH_URL } from '../../../config';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = () =>{
 
@@ -10,6 +11,7 @@ const SignUpForm = () =>{
     const [passwordRepeat, setPasswordRepeat] = useState('');
     const [status, setStatus] = useState(null); // null. 'loading', 'success', 'serverError', 'clientError', 'loginError'
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const navigate = useNavigate();
 
 
     const handleSignUpSubmit = () => {
@@ -44,6 +46,9 @@ const SignUpForm = () =>{
             .then(res => {
                 if (res.status === 201) {
                     setStatus('success');
+                    setTimeout(() => {
+						navigate('/login');
+					}, 2000);
                 } else if (res.status === 400){
                     setStatus('clientError');
                 } else if (res.status === 409){
