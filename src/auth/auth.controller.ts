@@ -32,8 +32,8 @@ export class AuthController {
     });
   }
 
-  @Get('user')
   @UseGuards(JwtAuthGuard)
+  @Get('user')
   getUser(@Request() req) {
     return req.user;
   }
