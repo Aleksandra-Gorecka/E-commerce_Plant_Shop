@@ -4,6 +4,7 @@ import { logOut } from '../../../redux/usersRedux';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { clearCart } from '../../../redux/cartRedux';
+import { Spinner } from 'react-bootstrap';
 
 const LogoutForm = () =>{
 
@@ -29,7 +30,15 @@ const LogoutForm = () =>{
     }, [dispatch, navigate])
 
 
-    return <p className="text-center my-5">Now you are logged out, see you soon!</p>
+    return (
+        <div>
+            <p className="text-center my-5">Now you are logged out, see you soon!</p>
+            <Spinner animation="border" role="status" className="d-block mx-auto my-3">
+                <span className="visually-hidden">Loading...</span>
+            </Spinner>
+        </div>
+    )
+    
 }
 
 export default LogoutForm;

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchProducts } from './redux/productsRedux';
-import { Container, Spinner } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import Header from './components/views/Header/Header'
 import Footer from './components/views/Footer/Footer'
 import { Routes, Route } from 'react-router-dom';
@@ -38,11 +38,8 @@ const App = () => {
   }, [ cart, dispatch, isDataLoaded ]);
 
   useEffect(() => {
-    const fetchData = async () => {
       dispatch(fetchProducts());
-      await checkLoggedUser(dispatch);
-    }
-      fetchData();
+      checkLoggedUser(dispatch);
   }, [dispatch]);
 
   

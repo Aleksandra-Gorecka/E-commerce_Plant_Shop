@@ -10,7 +10,6 @@ import { useForm } from 'react-hook-form';
 
 const OrderForm = () =>{
 
-    const userData = JSON.parse(localStorage.getItem('user'));
     const user = useSelector((state) => state.user);
     const cart = useSelector(getCart);
     const products = useSelector(getAllProducts);
@@ -25,7 +24,6 @@ const OrderForm = () =>{
     const [zip, setZip] = useState('');
     const [city, setCity] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('');
-    const [userId, ] = useState(userData?.id);
     const [status, setStatus] = useState(null);
 
     useEffect(() => {
@@ -86,10 +84,9 @@ const OrderForm = () =>{
     const handleOrderSubmit = async () => {
       setStatus('loading')
 
-      if (!userId) {
-        setStatus('loginError');
-        return;
-      }
+      const userData = JSON.parse(localStorage.getItem('user'));
+      const userId = userData.id
+
       if (
         !name ||
         !email ||

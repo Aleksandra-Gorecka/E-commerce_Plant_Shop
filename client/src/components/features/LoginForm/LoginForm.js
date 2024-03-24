@@ -3,8 +3,9 @@ import { AUTH_URL } from '../../../config';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logIn } from '../../../redux/usersRedux';
+//import { logIn } from '../../../redux/usersRedux';
 import { useForm } from 'react-hook-form';
+import { checkLoggedUser } from '../../../utils/checkLoggedUser';
 
 const LoginForm = () =>{
 
@@ -46,7 +47,8 @@ const LoginForm = () =>{
 			.then(res => {
 				if (res.status === 201) {
                     setStatus('success');
-                    dispatch(logIn({ email }));
+                    checkLoggedUser(dispatch);
+                    //dispatch(logIn({ email }));
 					setTimeout(() => {
 						navigate('/');
 					}, 2000);
