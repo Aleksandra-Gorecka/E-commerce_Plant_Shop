@@ -1,4 +1,4 @@
-# Online plant store
+# Online plants store
 
 Fullstack e-commerce website that was created as part of a coding bootcamp, with no design provided. 
 
