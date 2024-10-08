@@ -10,14 +10,14 @@ The backend is a simple REST API, offering endpoints for products and orders, an
 
 ## Demo
 
-[Please consider waiting a moment to see the page :)](https://e-commerce-plant-shop.onrender.com/)
+[Please hold on while the page loads. Thank you! :)](https://e-commerce-plant-shop.onrender.com/)
 
 ### Tech Stack
 
 **Client:** 
 - React 18.2.0
 
-  **Server:** 
+**Server:** 
 - NestJS 9.0.0
 - Prisma 4.5.0
 
